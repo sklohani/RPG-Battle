@@ -1,5 +1,6 @@
 import random
-
+from classes.magic import spell
+from classes.inventory import item
 
 class bcolors:
     HEADER = '\033[95m'
@@ -13,7 +14,7 @@ class bcolors:
 
 
 class person:
-    def __init__(self, hp, mp, atk, df, magic):
+    def __init__(self, hp, mp, atk, df, magic, item):
         self.maxhp = hp
         self.hp = hp
         self.maxmp = mp
@@ -22,15 +23,16 @@ class person:
         self.atkh = atk + 10
         self.df = df
         self.magic = magic
-        self.action = ["Attack", "Magic"]
+        self.item = item
+        self.action = ["Attack", "Magic", "Item"]
 
     def damage(self):
         return random.randrange(self.atkl, self.atkh)
 
-    def spell_damage(self, i):
-        mgl = int(self.magic[i]["dmg"]) - 5
-        mgh = int(self.magic[i]["dmg"]) + 5
-        return random.randrange(mgl, mgh)
+    # def spell_damage(self, i):
+    #     mgl = int(self.magic[i]["dmg"]) - 5
+    #     mgh = int(self.magic[i]["dmg"]) + 5
+    #     return random.randrange(mgl, mgh)
 
     def take_damage(self, dmg):
         self.hp -= dmg
@@ -58,24 +60,31 @@ class person:
     def reduce_mp(self, cost):
         self.mp -= cost
 
-    def get_spell_name(self, i):
-        return self.magic[i]["name"]
+    # def get_spell_name(self, i):
+    #     return self.magic[i]["name"]
 
-    def get_spell_cost(self, i):
-        return self.magic[i]["cost"]
+    # def get_spell_cost(self, i):
+    #     return self.magic[i]["cost"]
 
     def choose_action(self):
         i = 1
-        print("Actions")
+        print("\n" + bcolors.OKBLUE + "ACTIONS" + bcolors.ENDC)
         for item in self.action:
-            print(str(i) + ":", item)
+            print("    " + str(i) + ".", item)
             i += 1
 
     def choose_magic(self):
         i = 1
-        print("Magics")
-        for item in self.magic:
-            print(str(i) + ":", item["name"], "(cost :", item["cost"] + ")")
+        print("\n" + bcolors.OKBLUE + "MAGICS" + bcolors.ENDC)
+        for spell in self.magic:
+            print("    " + str(i) + ".", spell.name, "(cost :", str(spell.cost) + ")")
+            i += 1
+
+    def choose_item(self):
+        i=1
+        print("\n" + bcolors.OKBLUE + "ITEMS" + bcolors.ENDC)
+        for item in self.item:
+            print("    " + str(i) + ".", item.name, ":", item.description, "x5")
             i += 1
 
 
